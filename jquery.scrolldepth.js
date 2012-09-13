@@ -12,6 +12,7 @@
     minHeight: 0,
     offset: 0, // Not used yet
     percentage: true,
+    profile: null,
     testing: false
   },
 
@@ -43,10 +44,11 @@
     function sendEvent(action, label, timing) {
       if (!options.testing) {
 
-        _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        var profile = options.profile ? options.profile + '.' : '';
+        _gaq.push([profile + '_trackEvent', 'Scroll Depth', action, label, 1, true]);
 
         if (arguments.length > 2) {
-          _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          _gaq.push([profile + '_trackTiming', 'Scroll Depth', action, timing, label, 100]);
         }
 
       } else {
