@@ -1,3 +1,5 @@
+[![endorse](http://api.coderwall.com/bashir/endorsecount.png)](http://coderwall.com/bashir)
+
 # jQuery Scroll Depth
 This is a jQuery plugin that keeps an eye on how far down the page a user has scrolled and then reports data back to Google Analytics using the GA Events API. The default behavior reports on the 25%, 50%, 75%, and 100% scroll marks. It also sends an initial "Baseline" event to use as a benchmark.
 
