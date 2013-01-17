@@ -14,6 +14,7 @@
     percentage: true,
     profile: null,
     category : 'Scroll Depth',
+    action : 'Percentage',
     testing: false
   },
 
@@ -36,7 +37,7 @@
     }
 
     // Establish baseline (0% scroll)
-    sendEvent('Percentage', 'Baseline');
+    sendEvent(options.action, 'Baseline');
 
     /*
      * Functions
@@ -71,7 +72,7 @@
       // Check each active mark
       $.each(marks, function(key, val) {
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-          sendEvent('Percentage', key, timing);
+          sendEvent(options.percentage, key, timing);
           cache.push(key);
         }
       });
