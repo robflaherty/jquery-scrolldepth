@@ -12,6 +12,9 @@
     minHeight: 0,
     offset: 0, // Not used yet
     percentage: true,
+    profile: null,
+    category : 'Scroll Depth',
+    action : 'Percentage',
     testing: false
   },
 
@@ -34,7 +37,7 @@
     }
 
     // Establish baseline (0% scroll)
-    sendEvent('Percentage', 'Baseline');
+    sendEvent(options.action, 'Baseline');
 
     /*
      * Functions
@@ -43,10 +46,11 @@
     function sendEvent(action, label, timing) {
       if (!options.testing) {
 
-        _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        var profile = options.profile ? options.profile + '.' : '';
+        _gaq.push([profile + '_trackEvent', options.category, action, label, 1, true]);
 
         if (arguments.length > 2) {
-          _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          _gaq.push([profile + '_trackTiming', options.category, action, timing, label, 100]);
         }
 
       } else {
@@ -68,7 +72,7 @@
       // Check each active mark
       $.each(marks, function(key, val) {
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-          sendEvent('Percentage', key, timing);
+          sendEvent(options.action, key, timing);
           cache.push(key);
         }
       });
@@ -78,7 +82,7 @@
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
           if ( scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', elem, timing);
+            sendEvent(options.action, elem, timing);
             cache.push(elem);
           }
         }
