@@ -46,11 +46,10 @@
       if (!options.testing) {
 
         var profile = options.profile ? options.profile + '.' : '';
-        var category = options.category;
-        _gaq.push([profile + '_trackEvent', category, action, label, 1, true]);
+        _gaq.push([profile + '_trackEvent', options.category, action, label, 1, true]);
 
         if (arguments.length > 2) {
-          _gaq.push([profile + '_trackTiming', category, action, timing, label, 100]);
+          _gaq.push([profile + '_trackTiming', options.category, action, timing, label, 100]);
         }
 
       } else {
