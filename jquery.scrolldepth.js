@@ -72,7 +72,7 @@
       // Check each active mark
       $.each(marks, function(key, val) {
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-          sendEvent(options.percentage, key, timing);
+          sendEvent(options.action, key, timing);
           cache.push(key);
         }
       });
@@ -82,7 +82,7 @@
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
           if ( scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', elem, timing);
+            sendEvent(options.action, elem, timing);
             cache.push(elem);
           }
         }
