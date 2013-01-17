@@ -13,6 +13,7 @@
     offset: 0, // Not used yet
     percentage: true,
     profile: null,
+    category : 'Scroll Depth',
     testing: false
   },
 
@@ -45,10 +46,11 @@
       if (!options.testing) {
 
         var profile = options.profile ? options.profile + '.' : '';
-        _gaq.push([profile + '_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        var category = options.category;
+        _gaq.push([profile + '_trackEvent', category, action, label, 1, true]);
 
         if (arguments.length > 2) {
-          _gaq.push([profile + '_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          _gaq.push([profile + '_trackTiming', category, action, timing, label, 100]);
         }
 
       } else {
