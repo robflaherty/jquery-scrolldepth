@@ -43,10 +43,18 @@
     function sendEvent(action, label, timing) {
       if (!options.testing) {
 
-        _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        if ( typeof(ga) == "function" || typeof(ga) == "object" ) {
+          ga('send', 'event', 'Scroll Depth', action, label, 1, {'nonInteraction': 1});
+        } else if ( typeof(_gaq) == "function" || typeof(_gaq) == "object" ) {
+          _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        }
 
         if (arguments.length > 2) {
-          _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          if ( typeof(ga) == "function" || typeof(ga) == "object" ) {
+            ga('send', 'timing', 'Scroll Depth', action, timing, label);
+          } else if ( typeof(_gaq) == "function" || typeof(_gaq) == "object" ) {
+            _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          }
         }
 
       } else {
