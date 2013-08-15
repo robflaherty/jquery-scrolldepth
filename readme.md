@@ -33,6 +33,16 @@ $.scrollDepth({
 ## GA Events Warning
 <del>GA Events data messes with your bounce rate.</del> As of version 0.1.1 of this plugin, the scroll events no longer impact your bounce rate. If you downloaded the initial 0.1.0 release and you care about the GA displayed bounce rate, update to the latest version.
 
+## Google Tag Manager implementation
+If you want this plugin to work with the Google Tag Manager (for optimal flexibility you should), you need to configure some macro's and rules within your Google Tag Manager setup.
+
+### Macro's:
+* Will be added *
+
+### Rules:
+The tag which sends data to any tracking system implemented within GTM and using the Macro's filled by this plugin should fire when an "event" equals "GAscroll" is detected. This ensures that all datalayer values are passed to macro's before the tag is fired.
+
+
 ## Browser Support
 Tested in Chrome (18), Firefox (8), Safari (5), Opera (10), IE (7-10). Also tested on iOS, Opera Mobile, and a few Android emulators.
 
