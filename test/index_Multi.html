@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jQuery Scroll Depth Test</title>
+
+  <!-- Google Tag Manager
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXF');</script>
+  End Google Tag Manager -->
+ 
+ 
+ 
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXX-Y');
+  ga('send', 'pageview');
+
+  </script>
+  <!-- End Google Analytics -->
+ 
+  <!-- 
+ <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script> -->
+</head>
+<body>
+  <div id="console" style="background: #aaa; width: 200px; position: fixed; top: 0; right: 0; text-align: center; padding: 20px; line-height: 1; font-family: sans-serif;"></div>
+  <h1>jQuery Scroll Depth Test Page</h1>
+  <div id="nav" style="background: #eee; height: 500px"><a href="http://conceptkings.nl/GA/scroll/test/index.html#main" >main</a>  <a href="http://conceptkings.nl/GA/scroll/test/index.html#mainextra" >mainextra</a></div>
+  <div id="top" style="background: #eee; height: 500px">#top</div>
+  <div id="main" style="background: #ccc; height: 2000px">#main</div>
+    <div id="mainextra" style="background: #999; height: 2000px">#mainextra</div>
+	    <div id="main2" style="background: #666; height: 2000px">#main2</div>
+  <footer style="background: #333; height: 200px; display: block;">footer</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="../jquery.scrolldepthMulti.js"></script>
+  <script>
+    $.scrollDepth({
+	  type: 'ua',
+      elements: ['#nav', '#top', '#main', '#mainextra', 'footer']
+    });
+  </script>
+</body>
+</html>
