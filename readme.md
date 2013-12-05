@@ -37,7 +37,22 @@ $.scrollDepth({
 If you want this plugin to work with the Google Tag Manager (for optimal flexibility you should), you need to configure some macro's and rules within your Google Tag Manager setup.
 
 ### Macro's:
-* Will be added *
+This plugin uses the (sort of) standardised macro's to process events. You could uses the macro's below for all Google Analytics events you would like to process through GTM. Of course  you could also build alternate macro's or tags to process the data in a different way (virtual pageviews for instance). 
+
+**Macro name:** event - Category
+**Data Layer Variable name:** eventCategory
+
+**Macro name:** event - Action
+**Data Layer Variable name:** eventAction
+
+**Macro name:** event - Label
+**Data Layer Variable name:** eventLabel
+
+**Macro name:** event - Value
+**Data Layer Variable name:** eventValue
+
+**Macro name:** NonInteraction
+**Data Layer Variable name:** eventNonInteraction
 
 ### Rules:
 The tag which sends data to any tracking system implemented within GTM and using the Macro's filled by this plugin should fire when an "event" equals "GAscroll" is detected. This ensures that all datalayer values are passed to macro's before the tag is fired.
@@ -47,9 +62,11 @@ The tag which sends data to any tracking system implemented within GTM and using
 Tested in Chrome (18), Firefox (8), Safari (5), Opera (10), IE (7-10). Also tested on iOS, Opera Mobile, and a few Android emulators.
 
 ## Contact
-If you have any questions feel free to get in touch http://roelwillems.com
+If you have any questions feel free to get in touch info a-t roelwillems.com
 
 ## Changelog
+
+12/5/13): Updated README.md, incorporated information about the required macro's 
 
 Forked (8/15/13): Added support for Universal Analytics and Google Tag Manager events
 
