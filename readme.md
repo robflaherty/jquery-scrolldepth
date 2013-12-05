@@ -54,6 +54,17 @@ This plugin uses the (sort of) standardised macro's to process events. You could
 **Macro name:** NonInteraction
 **Data Layer Variable name:** eventNonInteraction
 
+
+### Tag:
+After this you can add a Google Analytics event (standard Google Analytics tracking code with track type “Event”). With the following macro’s:
+
+**Category** - _{{event - Category}}_
+**Action** - _{{event - Action}}_
+**Label** - _{{event - Label}}_
+**Value** - _{{event - Value}}_
+**Non-Interaction Hit** - _{{event - NonInteraction}}_
+
+
 ### Rules:
 The tag which sends data to any tracking system implemented within GTM and using the Macro's filled by this plugin should fire when an "event" equals "GAscroll" is detected. This ensures that all datalayer values are passed to macro's before the tag is fired.
 
@@ -66,7 +77,7 @@ If you have any questions feel free to get in touch info a-t roelwillems.com
 
 ## Changelog
 
-12/5/13): Updated README.md, incorporated information about the required macro's 
+12/5/13): Updated README.md, incorporated information about the required macro's and GTM Google Analytics Tag
 
 Forked (8/15/13): Added support for Universal Analytics and Google Tag Manager events
 
