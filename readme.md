@@ -66,7 +66,7 @@ After this you can add a Google Analytics event (standard Google Analytics track
 
 
 ### Rules:
-The tag which sends data to any tracking system implemented within GTM and using the Macro's filled by this plugin should fire when an "event" equals "GAscroll" is detected. This ensures that all datalayer values are passed to macro's before the tag is fired.
+The tag which sends data to any tracking system implemented within GTM and using the Macro's filled by this plugin should fire when an "event" equals "GAscroll" is detected. This ensures that all dataLayer values are passed to macro's before the tag is fired.
 
 
 ## Browser Support
