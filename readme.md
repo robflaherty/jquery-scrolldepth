@@ -59,9 +59,13 @@ This plugin uses the (sort of) standardised macro's to process events. You could
 After this you can add a Google Analytics event (standard Google Analytics tracking code with track type “Event”). With the following macro’s:
 
 **Category** - _{{event - Category}}_
+
 **Action** - _{{event - Action}}_
+
 **Label** - _{{event - Label}}_
+
 **Value** - _{{event - Value}}_
+
 **Non-Interaction Hit** - _{{event - NonInteraction}}_
 
 
