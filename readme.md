@@ -7,7 +7,7 @@ In addition to the percentage scroll marks you can trigger events based on speci
 
 Lastly, as of version 0.1.2, timing data for each scroll event is recorded and reported to Google Analytics via the [User Timing API](https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingTiming). You can find this data in Google Analytics at Content > Site Speed > User Timings. This will give you data about how many seconds it takes users to reach each scroll point. (Note: Averages can be very misleading. Make sure to dig through the GA UI to turn up more useful data. It's also a good idea to [increase the sample rate](https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._setSiteSpeedSampleRate) from the default 5% to 100%.)
 
-[View the original Project Page](http://robflaherty.github.com/jquery-scrolldepth/)
+[View the Project Page for ScrollDepth Multi](http://roelwillems.github.io/jquery-scrolldepth/)
 
 [View the original Blog Post](http://www.ravelrumba.com/blog/tracking-scroll-depth-jquery-google-analytics/)
 
