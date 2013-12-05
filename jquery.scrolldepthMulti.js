@@ -12,8 +12,7 @@
     elements: [],
     minHeight: 0,
     offset: 0, // Not used yet
-	elem: 0,
-	type: 'ga',  // set type format in which the events should be send ('ga', 'ua' and 'gtm). Support for Google Analytics, (Google) Universal Analytics, and Google Tag Manager
+    elem: 0,
     percentage: true,
     testing: false
   },
@@ -44,32 +43,37 @@
      */
 
     function sendEvent(action, label, timing) {
-        if (!options.testing && options.type == 'ga') {
-		
-          _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+        if (!options.testing) {
+                
+         
+			if (typeof(ga) !== "undefined") {
+			          ga('send', 'event', 'Scroll Depth', action, label, 1, {'nonInteraction': 1});
 
-          if (arguments.length > 2) {
-            _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
-            }
+			          if (arguments.length > 2) {
+			            ga('send', 'timing', 'Scroll Depth', action, timing, label);
+			          }
 
-        } else if (!options.testing && options.type == 'ua') {
-  		  ga('send', 'event', 'Scroll Depth', action, label, 1, {'nonInteraction': 1});
+			        }
 
-            if (arguments.length > 2) {
-  		  ga('send', 'timing', 'Scroll Depth', action, timing, label);
-  	      }
-	 
-       } else if (!options.testing && options.type == 'gtm') {
-	     		 dataLayer.push({'event':'GAscroll', 'eventCategory':'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': true});
-	              
-				  if (arguments.length > 2) {
-	     		   dataLayer.push({'event':'GAtiming', 'eventCategory':'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
-	             }
-	  
-	         } else {
-         $('#console').html(action + ': ' + label + '</br>' + 'Timing: ' + timing);
-      }
+			if (typeof(_gaq) !== "undefined") {
+			          _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, true]);
+
+			          if (arguments.length > 2) {
+			            _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+			          }
+
+			        }
+
+			if(typeof(dataLayer)!== "undefined") {
+                        dataLayer.push({'event':'GAscroll', 'eventCategory':'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': true});
+                      
+                     if (arguments.length > 2) {
+                        dataLayer.push({'event':'GAtiming', 'eventCategory':'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
+                     }
+          
+                 }
     }
+}
 
     function calculateMarks(docHeight) {
       return {
