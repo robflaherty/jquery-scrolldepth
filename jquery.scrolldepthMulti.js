@@ -1,5 +1,5 @@
 /*!
- * jquery.scrolldepth.js | v0.1.2
+ * jquery.scrolldepth.js | v0.1.3
  * Copyright (c) 2012 Rob Flaherty (@robflaherty)
  * Licensed under the MIT and GPL licenses.
  * Multi-tool support bij Roel Willems (roelwillems.com)

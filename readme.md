@@ -80,7 +80,9 @@ If you have any questions feel free to get in touch info a-t roelwillems.com
 
 ## Changelog
 
-12/5/13): Updated README.md, incorporated information about the required macro's and GTM Google Analytics Tag
+0.1.3 (12/5/13): Updated README.md, incorporated information about the required macro's and GTM Google Analytics Tag
+
+12/5/13: Updated README.md, incorporated information about the required macro's and GTM Google Analytics Tag
 
 Forked (8/15/13): Added support for Universal Analytics and Google Tag Manager events
 
