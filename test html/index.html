@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>jQuery Scroll Depth Test</title>
+  <title>jQuery Scroll Depth - Test page</title>
 
   <!-- Google Tag Manager
   <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-XXXXX"
@@ -11,12 +11,12 @@
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-XXXXF');</script>
-  End Google Tag Manager -->
+  })(window,document,'script','dataLayer','GTM-XXXX');</script>
+  <!-- End Google Tag Manager -->
  
  
  
-  <!-- Google Analytics -->
+  <!-- Universal Analytics -->
   <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -27,9 +27,9 @@
   ga('send', 'pageview');
 
   </script>
-  <!-- End Google Analytics -->
+  <!-- End Universal Analytics -->
  
-  <!-- 
+  <!-- Google Analytics
  <script type="text/javascript">
 
     var _gaq = _gaq || [];
@@ -42,7 +42,9 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 
-  </script> -->
+  </script> 
+	 <!-- End Google Analytics --> 
+	 
 </head>
 <body>
   <div id="console" style="background: #aaa; width: 200px; position: fixed; top: 0; right: 0; text-align: center; padding: 20px; line-height: 1; font-family: sans-serif;"></div>
@@ -51,16 +53,15 @@
   <div id="top" style="background: #eee; height: 500px">#top</div>
   <div id="main" style="background: #ccc; height: 2000px">#main</div>
     <div id="mainextra" style="background: #999; height: 2000px">#mainextra</div>
-	    <div id="main2" style="background: #666; height: 2000px">#main2</div>
+            <div id="main2" style="background: #666; height: 2000px">#main2</div>
   <footer style="background: #333; height: 200px; display: block;">footer</footer>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="../jquery.scrolldepthMulti.js"></script>
-  <script>
-    $.scrollDepth({
-	  type: 'ua',
-      elements: ['#nav', '#top', '#main', '#mainextra', 'footer']
-    });
-  </script>
+    <script>
+      $.scrollDepth({
+        elements: ['#nav', '#top', '#main', '#mainextra', 'footer']
+      });
+    </script>
 </body>
 </html>
