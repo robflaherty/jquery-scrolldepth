@@ -15,7 +15,7 @@ Lastly, as of version 0.1.2, timing data for each scroll event is recorded and r
 ```javascript
 // Basic
 $.scrollDepth({
-type: 'ua' // use 'ga' for Google Analytics, 'ua' for Universal Analytics and 'gtm' for Google Tag Manager support
+ percentage: true // Track depth by percentage
 });
 
 // With some additional options
@@ -23,7 +23,6 @@ $.scrollDepth({
   minHeight: 2000, // Only track for documents taller than 2000px | Default: 0
   elements: ['#comments', 'footer'] // Track DOM elements | Default: []
   percentage: false, // Don't track depth percentage | Default: true
-  type: 'ua' // use 'ga' for Google Analytics, 'ua' for Universal Analytics and 'gtm' for Google Tag Manager support
 });
 ```
 ## Requirements
