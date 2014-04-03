@@ -17,8 +17,7 @@
     trackHidden: false
   };
 
-  var $window = $(window),
-    cache = [],
+  var cache = [],
     lastPixelDepth = 0,
     universalGA,
     classicGA,
