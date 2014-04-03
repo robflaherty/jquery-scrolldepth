@@ -1,10 +1,10 @@
 /*!
  * @preserve
- * jquery.scrolldepth.js | v0.5
+ * standalone.scrolldepth.js | v0.5
  * Copyright (c) 2014 Rob Flaherty (@robflaherty)
  * Licensed under the MIT and GPL licenses.
  */
-;(function ( $, window, document, undefined ) {
+;(function ( window, document, undefined ) {
 
   "use strict";
 
@@ -17,8 +17,7 @@
     trackHidden: false
   };
 
-  var $window = $(window),
-    cache = [],
+  var cache = [],
     lastPixelDepth = 0,
     universalGA,
     classicGA,
@@ -28,14 +27,14 @@
    * Plugin
    */
 
-  $.scrollDepth = function(options) {
+  window.scrollDepth = function(options) {
 
     var startTime = +new Date;
 
-    options = $.extend({}, defaults, options);
+    options = extend({}, defaults, options);
 
     // Return early if document height is too small
-    if ( $(document).height() < options.minHeight ) {
+    if ( height(document) < options.minHeight ) {
       return;
     }
 
@@ -126,8 +125,8 @@
 
     function checkMarks(marks, scrollDistance, timing) {
       // Check each active mark
-      $.each(marks, function(key, val) {
-        if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
+      each(marks, function(val, key) {
+        if ( inArray(key, cache) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
         }
@@ -135,10 +134,13 @@
     }
 
     function checkElements(elements, scrollDistance, timing) {
-      $.each(elements, function(index, elem) {
-        if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
-          if ((options.trackHidden || $(elem).is(":visible")) && scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
+      each(elements, function(elem, index) {
+        var $elem = document.querySelector(elem),
+            offset_top = $elem.getBoundingClientRect().top,
+            is_visible = isVisible($elem)
+        if ($elem && inArray(elem, cache) === -1) {
+          if ((options.trackHidden || is_visible) && scrollDistance >= (offset_top + window.pageYOffset)) {
+            sendEvent('Elements', $elem.getAttribute("data-ga_event_label") || elem, scrollDistance, timing);
             cache.push(elem);
           }
         }
@@ -188,16 +190,14 @@
     /*
      * Scroll Event
      */
-
-    $window.on('scroll.scrollDepth', throttle(function() {
+    var scroll_handler = throttle(function() {
       /*
        * We calculate document and window height on each scroll event to
        * account for dynamic DOM changes.
        */
-
-      var docHeight = $(document).height(),
-        winHeight = window.innerHeight ? window.innerHeight : $window.height(),
-        scrollDistance = $window.scrollTop() + winHeight,
+      var docHeight = height(document),
+        winHeight = height(window),
+        scrollDistance = scrollTop(window) + winHeight,
 
         // Recalculate percentage marks
         marks = calculateMarks(docHeight),
@@ -207,7 +207,7 @@
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
-        $window.off('scroll.scrollDepth');
+        off(window, "scroll", scroll_handler);
         return;
       }
 
@@ -220,8 +220,109 @@
       if (options.percentage) {
         checkMarks(marks, scrollDistance, timing);
       }
-    }, 500));
-
+    }, 500);
+    on(window, "scroll", scroll_handler);
   };
 
-})( jQuery, window, document );
+  /**
+   * extend function bowrroed from the You Might Not Need jQuery project
+   * http://youmightnotneedjquery.com/#extend
+   * Copyright (c) 2014 HubSpot, Inc.
+   * MIT License
+   */
+  function extend(out) {
+    out = out || {};
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i]) {
+        continue;
+      }
+
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key)) {
+          out[key] = arguments[i][key];
+        }
+      }
+    }
+
+    return out;
+  }
+
+  function each(iterable, fn) {
+    if (typeof iterable.length == "number") {
+      for (var i = 0; i < iterable.length; i++) {
+        fn(iterable[i], i);
+      }
+    }
+    else {
+      for (var key in iterable) {
+        if (iterable.hasOwnProperty(key)) {
+          fn(iterable[key], key);
+        }
+      }
+    }
+  }
+
+  function on(elem, evt, fn) {
+    if (elem.addEventListener) {
+      elem.addEventListener(evt, fn, false);
+      return true;
+    }
+    else if (elem.attachEvent) {
+      return elem.attachEvent("on"+ evt, function() {
+        fn.call(elem)
+      });
+    }
+  }
+
+  function off(elem, evt, fn) {
+    if (elem.removeEventListener) {
+      elem.removeEventListener(evt, fn);
+    }
+    else {
+      elem.detachEvent("on"+ evt, fn);
+    }
+  }
+
+  function inArray(value, array, from_index) {
+    if ("indexOf" in array) {
+      return array.indexOf(value, from_index)
+    }
+    else {
+      for (var i = from_index || 0; i < array.length; i++) {
+        if (array[i] === value) {
+          return i;
+        }
+      }
+      return -1;
+    }
+  }
+
+  function height(elem) {
+    if (elem == window) {
+      return elem['innerHeight']
+    }
+    else if (elem.nodeType == elem.DOCUMENT_NODE) {
+      return elem.documentElement['scrollHeight']
+    }
+    else {
+      return Math.round(elem.getBoundingClientRect().height)
+    }
+  }
+
+  function scrollTop(elem) {
+    if (elem == window) {
+      return window.pageYOffset
+    }
+    else if (elem.nodeType == elem.DOCUMENT_NODE) {
+      return elem.documentElement.scrollTop
+    }
+    else {
+      return elem.scrollTop
+    }
+  }
+
+  function isVisible(elem) {
+    return elem.offsetWidth > 0 && elem.offsetHeight > 0;
+  }
+})( window, document );
