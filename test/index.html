@@ -3,12 +3,61 @@
 <head>
   <meta charset="utf-8">
   <title>jQuery Scroll Depth Test</title>
+
+  <style>
+    #visibility-hidden {
+      height: 500px;
+      position: relative;
+      visibility: hidden;
+    }
+    #visibility-hidden:before {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      visibility: visible;
+      content: "element with visibility: hidden (should be tracked)";
+      background: #ddd;
+    }
+
+    #opacity-0 {
+      height: 500px;
+      position: relative;
+      opacity: 0;
+    }
+    #opacity-0:before {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 1;
+      content: "element with opacity: 0 (should be tracked)";
+      background: #ddd;
+    }
+
+    #display-none {
+      height: 500px;
+      position: relative;
+      display: none;
+    }
+    #display-none::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      content: "element with display: none (should not be tracked)";
+      background: #ddd;
+    }
+  </style>
 </head>
 <body>
   <div id="console" style="background: #aaa; width: 200px; position: fixed; top: 0; right: 0; text-align: center; padding: 20px; line-height: 1; font-family: sans-serif;"></div>
   <h1>jQuery Scroll Depth Test Page</h1>
   <div id="top" style="background: #eee; height: 500px">#top</div>
   <div id="main" style="background: #ccc; height: 2000px" data-ga_event_label="Main label">#main</div>
+  <div id="visibility-hidden"></div>
+  <div id="opacity-0"></div>
+  <div id="display-none"></div>
   <footer style="background: #999; height: 200px; display: block;" data-ga_event_label="Footer label">footer</footer>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -34,7 +83,7 @@
     //ga = undefined;
 
     $.scrollDepth({
-      elements: ['#main', 'footer'],
+      elements: ['#main', '#visibility-hidden', '#opacity-0', '#display-none', 'footer'],
       userTiming: false
     });
   </script>
