@@ -13,7 +13,8 @@
     elements: [],
     percentage: true,
     userTiming: true,
-    pixelDepth: true
+    pixelDepth: true,
+    trackHidden: false
   };
 
   var $window = $(window),
@@ -136,7 +137,7 @@
     function checkElements(elements, scrollDistance, timing) {
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
-          if ( scrollDistance >= $(elem).offset().top ) {
+          if ((options.trackHidden || $(elem).is(":visible")) && scrollDistance >= $(elem).offset().top ) {
             sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
             cache.push(elem);
           }
