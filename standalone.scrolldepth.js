@@ -188,13 +188,11 @@
     /*
      * Scroll Event
      */
-
-    $window.on('scroll.scrollDepth', throttle(function() {
+    var scroll_handler = throttle(function() {
       /*
        * We calculate document and window height on each scroll event to
        * account for dynamic DOM changes.
        */
-
       var docHeight = $(document).height(),
         winHeight = window.innerHeight ? window.innerHeight : $window.height(),
         scrollDistance = $window.scrollTop() + winHeight,
@@ -207,7 +205,7 @@
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
-        $window.off('scroll.scrollDepth');
+        off(window, "scroll", scroll_handler);
         return;
       }
 
@@ -220,11 +218,16 @@
       if (options.percentage) {
         checkMarks(marks, scrollDistance, timing);
       }
-    }, 500));
-
+    }, 500);
+    on(window, "scroll", scroll_handler);
   };
 
-  // http://youmightnotneedjquery.com/#extend
+  /**
+   * extend function bowrroed from the You Might Not Need jQuery project
+   * http://youmightnotneedjquery.com/#extend
+   * Copyright (c) 2014 HubSpot, Inc.
+   * MIT License
+   */
   function extend(out) {
     out = out || {};
 
@@ -255,6 +258,27 @@
           fn(iterable[key], key);
         }
       }
+    }
+  }
+
+  function on(elem, evt, fn) {
+    if (elem.addEventListener) {
+      elem.addEventListener(evt, fn, false);
+      return true;
+    }
+    else if (elem.attachEvent) {
+      return elem.attachEvent("on"+ evt, function() {
+        fn.call(elem)
+      });
+    }
+  }
+
+  function off(elem, evt, fn) {
+    if (elem.removeEventListener) {
+      elem.removeEventListener(evt, fn);
+    }
+    else {
+      elem.detachEvent("on"+ evt, fn);
     }
   }
 })( jQuery, window, document );
