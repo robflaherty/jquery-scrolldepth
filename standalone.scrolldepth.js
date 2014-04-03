@@ -35,7 +35,7 @@
     options = extend({}, defaults, options);
 
     // Return early if document height is too small
-    if ( $(document).height() < options.minHeight ) {
+    if ( height(document) < options.minHeight ) {
       return;
     }
 
@@ -193,8 +193,8 @@
        * We calculate document and window height on each scroll event to
        * account for dynamic DOM changes.
        */
-      var docHeight = $(document).height(),
-        winHeight = window.innerHeight ? window.innerHeight : $window.height(),
+      var docHeight = height(document),
+        winHeight = height(window),
         scrollDistance = $window.scrollTop() + winHeight,
 
         // Recalculate percentage marks
@@ -244,7 +244,7 @@
     }
 
     return out;
-  };
+  }
 
   function each(iterable, fn) {
     if (typeof iterable.length == "number") {
@@ -293,6 +293,18 @@
         }
       }
       return -1;
+    }
+  }
+
+  function height(elem) {
+    if (elem == window.window) {
+      return elem['innerHeight']
+    }
+    else if (elem.nodeType == elem.DOCUMENT_NODE) {
+      return elem.documentElement['scrollHeight']
+    }
+    else {
+      return Math.round(elem.getBoundingClientRect().height)
     }
   }
 })( jQuery, window, document );
