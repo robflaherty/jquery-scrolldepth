@@ -126,7 +126,7 @@
 
     function checkMarks(marks, scrollDistance, timing) {
       // Check each active mark
-      $.each(marks, function(key, val) {
+      each(marks, function(val, key) {
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
@@ -135,7 +135,7 @@
     }
 
     function checkElements(elements, scrollDistance, timing) {
-      $.each(elements, function(index, elem) {
+      each(elements, function(elem, index) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
           if ((options.trackHidden || $(elem).is(":visible")) && scrollDistance >= $(elem).offset().top ) {
             sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
@@ -225,7 +225,7 @@
   };
 
   // http://youmightnotneedjquery.com/#extend
-  var extend = function(out) {
+  function extend(out) {
     out = out || {};
 
     for (var i = 1; i < arguments.length; i++) {
@@ -243,4 +243,18 @@
     return out;
   };
 
+  function each(iterable, fn) {
+    if (typeof iterable.length == "number") {
+      for (var i = 0; i < iterable.length; i++) {
+        fn(iterable[i], i);
+      }
+    }
+    else {
+      for (var key in iterable) {
+        if (iterable.hasOwnProperty(key)) {
+          fn(iterable[key], key);
+        }
+      }
+    }
+  }
 })( jQuery, window, document );
