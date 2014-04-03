@@ -4,7 +4,7 @@
  * Copyright (c) 2014 Rob Flaherty (@robflaherty)
  * Licensed under the MIT and GPL licenses.
  */
-;(function ( $, window, document, undefined ) {
+;(function ( window, document, undefined ) {
 
   "use strict";
 
@@ -325,4 +325,4 @@
   function isVisible(elem) {
     return elem.offsetWidth > 0 && elem.offsetHeight > 0;
   }
-})( jQuery, window, document );
+})( window, document );
