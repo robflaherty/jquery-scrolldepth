@@ -32,7 +32,7 @@
 
     var startTime = +new Date;
 
-    options = $.extend({}, defaults, options);
+    options = extend({}, defaults, options);
 
     // Return early if document height is too small
     if ( $(document).height() < options.minHeight ) {
@@ -222,6 +222,25 @@
       }
     }, 500));
 
+  };
+
+  // http://youmightnotneedjquery.com/#extend
+  var extend = function(out) {
+    out = out || {};
+
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i]) {
+        continue;
+      }
+
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key)) {
+          out[key] = arguments[i][key];
+        }
+      }
+    }
+
+    return out;
   };
 
 })( jQuery, window, document );
