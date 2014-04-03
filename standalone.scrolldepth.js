@@ -135,9 +135,12 @@
 
     function checkElements(elements, scrollDistance, timing) {
       each(elements, function(elem, index) {
-        if ( inArray(elem, cache) === -1 && $(elem).length ) {
-          if ((options.trackHidden || $(elem).is(":visible")) && scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
+        var $elem = document.querySelector(elem),
+            offset_top = $elem.getBoundingClientRect().top,
+            is_visible = isVisible($elem)
+        if ($elem && inArray(elem, cache) === -1) {
+          if ((options.trackHidden || is_visible) && scrollDistance >= (offset_top + window.pageYOffset)) {
+            sendEvent('Elements', $elem.getAttribute("data-ga_event_label") || elem, scrollDistance, timing);
             cache.push(elem);
           }
         }
@@ -317,5 +320,9 @@
     else {
       return elem.scrollTop
     }
+  }
+
+  function isVisible(elem) {
+    return elem.offsetWidth > 0 && elem.offsetHeight > 0;
   }
 })( jQuery, window, document );
