@@ -127,7 +127,7 @@
     function checkMarks(marks, scrollDistance, timing) {
       // Check each active mark
       each(marks, function(val, key) {
-        if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
+        if ( inArray(key, cache) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
         }
@@ -136,7 +136,7 @@
 
     function checkElements(elements, scrollDistance, timing) {
       each(elements, function(elem, index) {
-        if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
+        if ( inArray(elem, cache) === -1 && $(elem).length ) {
           if ((options.trackHidden || $(elem).is(":visible")) && scrollDistance >= $(elem).offset().top ) {
             sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
             cache.push(elem);
@@ -279,6 +279,20 @@
     }
     else {
       elem.detachEvent("on"+ evt, fn);
+    }
+  }
+
+  function inArray(value, array, from_index) {
+    if ("indexOf" in array) {
+      return array.indexOf(value, from_index)
+    }
+    else {
+      for (var i = from_index || 0; i < array.length; i++) {
+        if (array[i] === value) {
+          return i;
+        }
+      }
+      return -1;
     }
   }
 })( jQuery, window, document );
