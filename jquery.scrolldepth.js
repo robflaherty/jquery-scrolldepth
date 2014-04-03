@@ -137,7 +137,7 @@
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
           if ( scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', elem, scrollDistance, timing);
+            sendEvent('Elements', $(elem).attr("data-ga_event_label") || elem, scrollDistance, timing);
             cache.push(elem);
           }
         }
