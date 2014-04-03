@@ -195,7 +195,7 @@
        */
       var docHeight = height(document),
         winHeight = height(window),
-        scrollDistance = $window.scrollTop() + winHeight,
+        scrollDistance = scrollTop(window) + winHeight,
 
         // Recalculate percentage marks
         marks = calculateMarks(docHeight),
@@ -297,7 +297,7 @@
   }
 
   function height(elem) {
-    if (elem == window.window) {
+    if (elem == window) {
       return elem['innerHeight']
     }
     else if (elem.nodeType == elem.DOCUMENT_NODE) {
@@ -305,6 +305,18 @@
     }
     else {
       return Math.round(elem.getBoundingClientRect().height)
+    }
+  }
+
+  function scrollTop(elem) {
+    if (elem == window) {
+      return window.pageYOffset
+    }
+    else if (elem.nodeType == elem.DOCUMENT_NODE) {
+      return elem.documentElement.scrollTop
+    }
+    else {
+      return elem.scrollTop
     }
   }
 })( jQuery, window, document );
