@@ -22,7 +22,7 @@
     lastPixelDepth = 0,
     universalGA,
     classicGA,
-    googleTagManager;
+    standardEventHandler;
 
   /*
    * Plugin
@@ -52,8 +52,15 @@
       classicGA = true;
     }
 
-    if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function") {
-      googleTagManager = true;
+    //use the GTM syntax for stand event handler
+    if (typeof options.eventHandler === "function") {
+      standardEventHandler = options.eventHandler;
+    }
+    else if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function") {
+      //auto detect GTM - only do this if options.eventHandler doesn't exists so that
+      //                  you could use that option to change/map the event structure
+      //                  and not fire the events twice
+      standardEventHandler = dataLayer.push;
     }
 
     if (options.percentage) {
@@ -69,17 +76,17 @@
 
     function sendEvent(action, label, scrollDistance, timing) {
 
-      if (googleTagManager) {
+      if (standardEventHandler) {
 
-        dataLayer.push({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+        standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
 
         if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
           lastPixelDepth = scrollDistance;
-          dataLayer.push({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+          standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
         }
 
         if (options.userTiming && arguments.length > 3) {
-          dataLayer.push({'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
+          standardEventHandler({'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
         }
 
       } else {
