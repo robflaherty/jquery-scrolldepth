@@ -40,8 +40,8 @@
     }
 
     /*
-     * Determine which version of GA is being used
-     * "ga", "_gaq", and "dataLayer" are the possible globals
+     * Determine which version of GA or Piwik is being used
+     * "ga", "_gaq", "_paq" and "dataLayer" are the possible globals
      */
 
     if (typeof ga === "function") {
@@ -50,6 +50,10 @@
 
     if (typeof _gaq !== "undefined" && typeof _gaq.push === "function") {
       classicGA = true;
+    }
+
+    if (typeof _paq !== "undefined" && typeof _paq.push === "function") {
+      piwik = true;
     }
 
     if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function") {
@@ -110,6 +114,17 @@
 
           if (options.userTiming && arguments.length > 3) {
             _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+          }
+
+        }
+
+        if (piwik) {
+
+          _paq.push(['trackEvent', 'Scroll Depth', action, label, 1, options.nonInteraction]);
+
+          if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
+            lastPixelDepth = scrollDistance;
+            _paq.push(['trackEvent', 'Scroll Depth', 'Pixel Depth', rounded(scrollDistance), 1, options.nonInteraction]);
           }
 
         }
