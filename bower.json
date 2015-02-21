@@ -1,7 +1,7 @@
 {
   "name": "scroll-depth",
   "main": "jquery.scrolldepth.js",
-  "version": "0.7.1",
+  "version": "0.8.2",
   "homepage": "http://scrolldepth.parsnip.io",
   "authors": [
     "Rob Flaherty"
