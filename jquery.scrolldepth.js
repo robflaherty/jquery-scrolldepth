@@ -15,14 +15,30 @@
     userTiming: true,
     pixelDepth: true,
     nonInteraction: true
-  };
-
-  var $window = $(window),
+  },
+  
+    $window = $(window),
     cache = [],
     lastPixelDepth = 0,
     universalGA,
     classicGA,
-    standardEventHandler;
+    standardEventHandler,
+    
+    sFunction = "function",
+    sUndefined = "undefined",
+    
+    sScrollDepth = 'Scroll Depth',
+    sScrollScrollDepth = 'scroll.scrollDepth',
+    
+    sBaseline = 'Baseline',
+    sPixelDepth = 'Pixel Depth',
+    sScrollDistance = 'ScrollDistance',
+    sPercentage = 'Percentage',
+    sElements = 'Elements',
+    
+    sTrackEvent = '_trackEvent',
+    sSend = 'send',
+    sEvent = 'event';
 
   /*
    * Plugin
@@ -44,25 +60,25 @@
      * "ga", "_gaq", and "dataLayer" are the possible globals
      */
 
-    if (typeof ga === "function") {
+    if (typeof ga === sFunction) {
       universalGA = true;
     }
 
-    if (typeof _gaq !== "undefined" && typeof _gaq.push === "function") {
+    if (typeof _gaq !== sUndefined && typeof _gaq.push === sFunction) {
       classicGA = true;
     }
 
-    if (typeof options.eventHandler === "function") {
+    if (typeof options.eventHandler === sFunction) {
       standardEventHandler = options.eventHandler;
-    } else if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function") {
+    } else if (typeof dataLayer !== sUndefined && typeof dataLayer.push === sFunction) {
       standardEventHandler = dataLayer.push;
     }
 
     if (options.percentage) {
       // Establish baseline (0% scroll)
-      sendBaseline('Percentage');
+      sendBaseline(sPercentage);
     } else if (options.elements) {
-      sendBaseline('Elements');
+      sendBaseline(sElements);
     }
 
     /*
@@ -76,19 +92,19 @@
 
       if (standardEventHandler) {
 
-        standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': 'Baseline', 'eventValue': 1, 'eventNonInteraction': true });
+        standardEventHandler({'event': sScrollDistance, 'eventCategory': sScrollDepth, 'eventAction': action, 'eventLabel': sBaseline, 'eventValue': 1, 'eventNonInteraction': true });
 
       } else {
 
         if (universalGA) {
 
-          ga('send', 'event', 'Scroll Depth', action, 'Baseline', 1, {'nonInteraction': true });
+          ga(sSend, sEvent, sScrollDepth, action, sBaseline, 1, {'nonInteraction': true });
 
         }
 
         if (classicGA) {
 
-          _gaq.push(['_trackEvent', 'Scroll Depth', action, 'Baseline', 1, true]);
+          _gaq.push([sTrackEvent, sScrollDepth, action, sBaseline, 1, true]);
 
         }
 
@@ -100,45 +116,45 @@
 
       if (standardEventHandler) {
 
-        standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+        standardEventHandler({'event': sScrollDistance, 'eventCategory': sScrollDepth, 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
 
         if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
           lastPixelDepth = scrollDistance;
-          standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+          standardEventHandler({'event': sScrollDistance, 'eventCategory': sScrollDepth, 'eventAction': sPixelDepth, 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
         }
 
         if (options.userTiming && arguments.length > 3) {
-          standardEventHandler({'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
+          standardEventHandler({'event': 'ScrollTiming', 'eventCategory': sScrollDepth, 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
         }
 
       } else {
 
         if (universalGA) {
 
-          ga('send', 'event', 'Scroll Depth', action, label, 1, {'nonInteraction': options.nonInteraction});
+          ga(sSend, sEvent, sScrollDepth, action, label, 1, {'nonInteraction': options.nonInteraction});
 
           if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
             lastPixelDepth = scrollDistance;
-            ga('send', 'event', 'Scroll Depth', 'Pixel Depth', rounded(scrollDistance), 1, {'nonInteraction': options.nonInteraction});
+            ga(sSend, sEvent, sScrollDepth, sPixelDepth, rounded(scrollDistance), 1, {'nonInteraction': options.nonInteraction});
           }
 
           if (options.userTiming && arguments.length > 3) {
-            ga('send', 'timing', 'Scroll Depth', action, timing, label);
+            ga(sSend, 'timing', sScrollDepth, action, timing, label);
           }
 
         }
 
         if (classicGA) {
 
-          _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, options.nonInteraction]);
+          _gaq.push([sTrackEvent, sScrollDepth, action, label, 1, options.nonInteraction]);
 
           if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
             lastPixelDepth = scrollDistance;
-            _gaq.push(['_trackEvent', 'Scroll Depth', 'Pixel Depth', rounded(scrollDistance), 1, options.nonInteraction]);
+            _gaq.push([sTrackEvent, sScrollDepth, sPixelDepth, rounded(scrollDistance), 1, options.nonInteraction]);
           }
 
           if (options.userTiming && arguments.length > 3) {
-            _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+            _gaq.push(['_trackTiming', sScrollDepth, action, timing, label, 100]);
           }
 
         }
@@ -161,7 +177,7 @@
       // Check each active mark
       $.each(marks, function(key, val) {
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-          sendEvent('Percentage', key, scrollDistance, timing);
+          sendEvent(sPercentage, key, scrollDistance, timing);
           cache.push(key);
         }
       });
@@ -171,7 +187,7 @@
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
           if ( scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', elem, scrollDistance, timing);
+            sendEvent(sElements, elem, scrollDistance, timing);
             cache.push(elem);
           }
         }
@@ -192,10 +208,10 @@
      */
 
     function throttle(func, wait) {
-      var context, args, result;
-      var timeout = null;
-      var previous = 0;
-      var later = function() {
+      var context, args, result,
+        timeout = null,
+        previous = 0,
+        later = function() {
         previous = new Date;
         timeout = null;
         result = func.apply(context, args);
@@ -203,7 +219,7 @@
       return function() {
         var now = new Date;
         if (!previous) previous = now;
-        var remaining = wait - (now - previous);
+        var remaining = wait - now + previous;
         context = this;
         args = arguments;
         if (remaining <= 0) {
@@ -222,7 +238,7 @@
      * Scroll Event
      */
 
-    $window.on('scroll.scrollDepth', throttle(function() {
+    $window.on(sScrollScrollDepth, throttle(function() {
       /*
        * We calculate document and window height on each scroll event to
        * account for dynamic DOM changes.
@@ -240,7 +256,7 @@
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
-        $window.off('scroll.scrollDepth');
+        $window.off(sScrollScrollDepth);
         return;
       }
 
