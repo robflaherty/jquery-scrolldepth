@@ -14,15 +14,16 @@
     percentage: true,
     userTiming: true,
     pixelDepth: true,
-    nonInteraction: true
+    nonInteraction: true,
+    bottomElement: ''
   };
 
   var $window = $(window),
-    cache = [],
-    lastPixelDepth = 0,
-    universalGA,
-    classicGA,
-    standardEventHandler;
+      cache = [],
+      lastPixelDepth = 0,
+      universalGA,
+      classicGA,
+      standardEventHandler;
 
   /*
    * Plugin
@@ -228,15 +229,11 @@
        * account for dynamic DOM changes.
        */
 
-      var docHeight = $(document).height(),
-        winHeight = window.innerHeight ? window.innerHeight : $window.height(),
-        scrollDistance = $window.scrollTop() + winHeight,
-
-        // Recalculate percentage marks
-        marks = calculateMarks(docHeight),
-
-        // Timing
-        timing = +new Date - startTime;
+      var docHeight = options.bottomElement ? $(options.bottomElement).offset().top : $(document).height(),
+          winHeight = window.innerHeight ? window.innerHeight : $window.height(),
+          scrollDistance = $window.scrollTop() + winHeight,
+          marks = calculateMarks(docHeight),
+          timing = +new Date - startTime;
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
