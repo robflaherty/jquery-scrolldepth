@@ -14,7 +14,9 @@
     percentage: true,
     userTiming: true,
     pixelDepth: true,
-    nonInteraction: true
+    nonInteraction: true,
+    $scrollContainer: $(window),
+    $scrollDocument: $(document)
   };
 
   var $window = $(window),
@@ -35,7 +37,7 @@
     options = $.extend({}, defaults, options);
 
     // Return early if document height is too small
-    if ( $(document).height() < options.minHeight ) {
+    if (options.$scrollDocument.height() < options.minHeight) {
       return;
     }
 
@@ -226,15 +228,15 @@
      * Scroll Event
      */
 
-    $window.on('scroll.scrollDepth', throttle(function() {
+    options.$scrollContainer.on('scroll.scrollDepth', throttle(function () {
       /*
        * We calculate document and window height on each scroll event to
        * account for dynamic DOM changes.
        */
 
-      var docHeight = $(document).height(),
-        winHeight = window.innerHeight ? window.innerHeight : $window.height(),
-        scrollDistance = $window.scrollTop() + winHeight,
+      var docHeight = options.$scrollDocument.height(),
+        winHeight = options.$scrollContainer.height(),
+        scrollDistance = options.$scrollContainer.scrollTop() + winHeight,
 
         // Recalculate percentage marks
         marks = calculateMarks(docHeight),
@@ -244,7 +246,7 @@
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
-        $window.off('scroll.scrollDepth');
+        options.$scrollContainer.off('scroll.scrollDepth');
         return;
       }
 
