@@ -297,7 +297,7 @@
         if ( !marks.hasOwnProperty(key) )
           continue;
         var val = marks[key];
-        if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
+        if ( cache.indexOf(key) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
         }
@@ -307,7 +307,7 @@
     function checkElements(elements, scrollDistance, timing) {
       for ( var i=0; i<elements.length; i++) {
         var elem = elements[i];
-        if ( $.inArray(elem, cache) === -1 ) {
+        if ( cache.indexOf(elem) === -1 ) {
           var elemNode = (typeof elem === "string") ? getElementBySelector(elem) : elem;
           if ( elemNode ) {
             var elemYOffset = getElementYOffsetToDocumentTop(elemNode);
