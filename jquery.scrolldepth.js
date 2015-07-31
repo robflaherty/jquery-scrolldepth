@@ -19,8 +19,7 @@
     gtmOverride: false
   };
 
-  var $window = $(window),
-    cache = [],
+  var cache = [],
     lastPixelDepth = 0,
     universalGA,
     classicGA,
@@ -62,6 +61,54 @@
   function getPageYOffset() {
     return window.pageYOffset || (document.compatMode === "CSS1Compat" ? document.documentElement.scrollTop : document.body.scrollTop);
   }
+
+  /*
+   * Polyfill for addEventListener and removeEventListener, for the event types required for this library.
+   * Not a full polyfill, as this has been reduced to what's needed here.
+   * Ref: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+   */
+
+  (function() {
+    if (!Element.prototype.addEventListener) {
+      var eventListeners=[];
+      var addEventListener=function(type,listener /*, useCapture (will be ignored) */) {
+        var self=this;
+        var wrapper=function(e) {
+          e.target=e.srcElement;
+          e.currentTarget=self;
+          if (listener.handleEvent) {
+            listener.handleEvent(e);
+          } else {
+            listener.call(self,e);
+          }
+        };
+        this.attachEvent("on"+type,wrapper);
+        eventListeners.push({object:this,type:type,listener:listener,wrapper:wrapper});
+      };
+      var removeEventListener=function(type,listener /*, useCapture (will be ignored) */) {
+        var counter=0;
+        while (counter<eventListeners.length) {
+          var eventListener=eventListeners[counter];
+          if (eventListener.object==this && eventListener.type==type && eventListener.listener==listener) {
+            this.detachEvent("on"+type,eventListener.wrapper);
+            eventListeners.splice(counter, 1);
+            break;
+          }
+          ++counter;
+        }
+      };
+      Element.prototype.addEventListener=addEventListener;
+      Element.prototype.removeEventListener=removeEventListener;
+      if (HTMLDocument) {
+        HTMLDocument.prototype.addEventListener=addEventListener;
+        HTMLDocument.prototype.removeEventListener=removeEventListener;
+      }
+      if (Window) {
+        Window.prototype.addEventListener=addEventListener;
+        Window.prototype.removeEventListener=removeEventListener;
+      }
+    }
+  })();
 
   /*
    * Plugin
@@ -289,7 +336,7 @@
 
       // If all marks already hit, unbind scroll event
       if (cache.length >= 4 + options.elements.length) {
-        $window.off('scroll', scrollEventHandler);
+        window.removeEventListener('scroll', scrollEventHandler);
         return;
       }
 
@@ -304,7 +351,7 @@
       }
     }, 500);
 
-    $window.on('scroll', scrollEventHandler);
+    window.addEventListener('scroll', scrollEventHandler, false);
 
   };
 
