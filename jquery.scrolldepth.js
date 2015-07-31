@@ -27,6 +27,19 @@
     standardEventHandler;
 
   /*
+   * Extend a series of objects with the properties of each.
+   * Ref: http://stackoverflow.com/a/11197343/159762
+   */
+
+  function extend(){
+    for ( var i=1; i<arguments.length; i++ )
+      for ( var key in arguments[i] )
+        if ( arguments[i].hasOwnProperty(key) )
+          arguments[0][key] = arguments[i][key];
+    return arguments[0];
+  }
+
+  /*
    * Reliably get the document height.
    * Borrowed from:
    * jQuery
@@ -143,7 +156,7 @@
 
     var startTime = +new Date;
 
-    options = $.extend({}, defaults, options);
+    options = extend({}, defaults, options);
 
     // Return early if document height is too small
     if ( getDocumentHeight() < options.minHeight ) {
