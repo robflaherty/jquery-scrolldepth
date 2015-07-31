@@ -4,7 +4,7 @@
  * Copyright (c) 2015 Rob Flaherty (@robflaherty)
  * Licensed under the MIT and GPL licenses.
  */
-;(function ( $, window, document, undefined ) {
+;(function ( window, document, undefined ) {
 
   "use strict";
 
@@ -149,10 +149,10 @@
   })();
 
   /*
-   * Plugin
+   * Library Interface
    */
 
-  $.scrollDepth = function(options) {
+  var init = function(options) {
 
     var startTime = +new Date;
 
@@ -401,4 +401,20 @@
 
   };
 
-})( jQuery, window, document );
+  /*
+   * Globals
+   */
+
+  window.scrollDepth = {
+    init: init
+  };
+
+  /*
+   * jQuery Plugin
+   */
+
+  if ( typeof window['jQuery'] !== 'undefined' ) {
+    window['jQuery'].scrollDepth = init;
+  }
+
+})( window, document );

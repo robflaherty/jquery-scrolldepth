@@ -15,9 +15,6 @@
     "google-analytics",
     "tracking"
   ],
-  "dependencies": {
-    "jquery" : ">=1.8"
-  },  
   "license": "MIT",
   "ignore": [
     "test",
