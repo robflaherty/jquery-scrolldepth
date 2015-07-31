@@ -1,6 +1,6 @@
 {
   "name": "scroll-depth",
-  "main": "jquery.scrolldepth.js",
+  "main": "scrolldepth.js",
   "version": "0.8.0",
   "homepage": "http://scrolldepth.parsnip.io",
   "authors": [
