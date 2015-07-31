@@ -9,6 +9,26 @@ Bug reports and code contributions are welcome. Please see [contributing.md](htt
 ## Testing
 There's a test HTML file that mocks the Google Analytics functions and writes the GA Event data to the console.
 
+## Browser Compatibility
+
+| Browser                   | Minimum Verison |
+|:------------------------- |:---------------:|
+| Chrome                    | 4
+| Firefox                   | 3.5
+| Internet Explorer         | 8
+| Opera                     | 10.1
+| Safari                    | 3.1
+| iOS Safari                | 3.2
+| Opera Mini                | 8
+| Blackberry Browser        | 7
+| Opera Mobile              | 12
+| Chrome for Android        | 42
+| Firefox for Android       | 39
+| IE Mobile                 | 10
+| UC Browser for Android    | 9.9
+
+Minimum browser compatibility is mostly affected by the use of `document.querySelector`.
+
 ## Contact
 If you have any questions you can find me on Twitter at [@robflaherty](https://twitter.com/robflaherty). If you need help fixing something, **please provide a URL**.
 

@@ -63,6 +63,15 @@
   }
 
   /*
+   * Reliably get the element's y-axis offset to the document top.
+   * Ref: https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+   */
+
+  function getElementYOffsetToDocumentTop(element) {
+    return element.getBoundingClientRect().top + getPageYOffset();
+  }
+
+  /*
    * Polyfill for addEventListener and removeEventListener, for the event types required for this library.
    * Not a full polyfill, as this has been reduced to what's needed here.
    * Ref: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
@@ -265,10 +274,14 @@
 
     function checkElements(elements, scrollDistance, timing) {
       $.each(elements, function(index, elem) {
-        if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
-          if ( scrollDistance >= $(elem).offset().top ) {
-            sendEvent('Elements', elem, scrollDistance, timing);
-            cache.push(elem);
+        if ( $.inArray(elem, cache) === -1 ) {
+          var elemNode = document.querySelector(elem);
+          if ( elemNode ) {
+            var elemYOffset = getElementYOffsetToDocumentTop(elemNode);
+            if ( scrollDistance >= elemYOffset ) {
+              sendEvent('Elements', elem, scrollDistance, timing);
+              cache.push(elem);
+            }
           }
         }
       });
