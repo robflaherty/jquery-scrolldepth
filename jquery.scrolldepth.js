@@ -293,16 +293,20 @@
 
     function checkMarks(marks, scrollDistance, timing) {
       // Check each active mark
-      $.each(marks, function(key, val) {
+      for ( var key in marks ) {
+        if ( !marks.hasOwnProperty(key) )
+          continue;
+        var val = marks[key];
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
         }
-      });
+      }
     }
 
     function checkElements(elements, scrollDistance, timing) {
-      $.each(elements, function(index, elem) {
+      for ( var i=0; i<elements.length; i++) {
+        var elem = elements[i];
         if ( $.inArray(elem, cache) === -1 ) {
           var elemNode = (typeof elem === "string") ? getElementBySelector(elem) : elem;
           if ( elemNode ) {
@@ -313,7 +317,7 @@
             }
           }
         }
-      });
+      };
     }
 
     function rounded(scrollDistance) {
