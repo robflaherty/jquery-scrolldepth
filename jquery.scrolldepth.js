@@ -72,6 +72,22 @@
   }
 
   /*
+   * Try really hard to get the first element matching a selector.
+   * Aims to support all browsers at least for selectors starting with `#`.
+   */
+
+  function getElementBySelector(selector) {
+    if (typeof window['jQuery'] !== 'undefined') {
+      return window['jQuery'](selector).get(0);
+    } else if (typeof document.querySelector !== 'undefined') {
+      return document.querySelector(selector);
+    } else if (selector.charAt(0) == '#') {
+      return document.getElementById(selector.substr(1));
+    }
+    return undefined;
+  }
+
+  /*
    * Polyfill for addEventListener and removeEventListener, for the event types required for this library.
    * Not a full polyfill, as this has been reduced to what's needed here.
    * Ref: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
@@ -275,7 +291,7 @@
     function checkElements(elements, scrollDistance, timing) {
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 ) {
-          var elemNode = (typeof elem === "string") ? document.querySelector(elem) : elem;
+          var elemNode = (typeof elem === "string") ? getElementBySelector(elem) : elem;
           if ( elemNode ) {
             var elemYOffset = getElementYOffsetToDocumentTop(elemNode);
             if ( scrollDistance >= elemYOffset ) {

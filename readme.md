@@ -29,7 +29,10 @@ When specifying elements by their selector, browser compatibility is as follows,
 | IE Mobile                 | 10
 | UC Browser for Android    | 9.9
 
-To expand browser compatibility to all effective browsers (IE 6+, Chrome 1+, Safari 1+, Firefox 2+, etc), specify `elements` as an array of `DOMElement` objects rather than string selectors.
+To expand browser compatibility to all effective browsers (IE 6+, Chrome 1+, Safari 1+, Firefox 2+, etc), you can:
+* include jQuery and all selectors supported by jQuery will be supported.
+* or, specify `elements` as an array of element IDs only, eg. `#main` and it will fallback to `document.getElementById`;
+* or, specify `elements` as an array of `DOMElement` objects rather than string selectors.
 
 ## Contact
 If you have any questions you can find me on Twitter at [@robflaherty](https://twitter.com/robflaherty). If you need help fixing something, **please provide a URL**.
