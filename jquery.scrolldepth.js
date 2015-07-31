@@ -275,7 +275,7 @@
     function checkElements(elements, scrollDistance, timing) {
       $.each(elements, function(index, elem) {
         if ( $.inArray(elem, cache) === -1 ) {
-          var elemNode = document.querySelector(elem);
+          var elemNode = (typeof elem === "string") ? document.querySelector(elem) : elem;
           if ( elemNode ) {
             var elemYOffset = getElementYOffsetToDocumentTop(elemNode);
             if ( scrollDistance >= elemYOffset ) {

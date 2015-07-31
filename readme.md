@@ -11,6 +11,8 @@ There's a test HTML file that mocks the Google Analytics functions and writes th
 
 ## Browser Compatibility
 
+When specifying elements by their selector, browser compatibility is as follows, due to use of `document.querySelector` to find the element.
+
 | Browser                   | Minimum Verison |
 |:------------------------- |:---------------:|
 | Chrome                    | 4
@@ -27,7 +29,7 @@ There's a test HTML file that mocks the Google Analytics functions and writes th
 | IE Mobile                 | 10
 | UC Browser for Android    | 9.9
 
-Minimum browser compatibility is mostly affected by the use of `document.querySelector`.
+To expand browser compatibility to all effective browsers (IE 6+, Chrome 1+, Safari 1+, Firefox 2+, etc), specify `elements` as an array of `DOMElement` objects rather than string selectors.
 
 ## Contact
 If you have any questions you can find me on Twitter at [@robflaherty](https://twitter.com/robflaherty). If you need help fixing something, **please provide a URL**.
