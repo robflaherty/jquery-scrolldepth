@@ -16,7 +16,8 @@
     pixelDepth: true,
     nonInteraction: true,
     gaGlobal: false,
-    gtmOverride: false
+    gtmOverride: false,
+    baseLine: false
   };
 
   var $window = $(window),
@@ -71,11 +72,13 @@
       };
     }
 
-    if (options.percentage) {
-      // Establish baseline (0% scroll)
-      sendBaseline('Percentage');
-    } else if (options.elements) {
-      sendBaseline('Elements');
+    if (options.baseLine) {
+      if (options.percentage) {
+        // Establish baseline (0% scroll)
+        sendBaseline('Percentage');
+      } else if (options.elements) {
+        sendBaseline('Elements');
+      }
     }
 
     /*
