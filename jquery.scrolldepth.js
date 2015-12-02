@@ -159,8 +159,11 @@
     }
 
     function rounded(scrollDistance) {
-      // Returns String
-      return (Math.floor(scrollDistance/250) * 250).toString();
+      // Returns underscore padded String
+      var pad = "____________";   // 10^12-1 pixels should be enough for most pages ;>
+      var roundedDistance = (Math.floor(scrollDistance/250) * 250).toString();
+      var paddedRoundedDistance = (pad+roundedDistance).slice(-pad.length);
+      return paddedRoundedDistance;
     }
 
     function init() {
