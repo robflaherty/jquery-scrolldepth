@@ -17,7 +17,10 @@
     nonInteraction: true,
     gaGlobal: false,
     gtmOverride: false,
-    markGap: 25
+    markGap: 25,
+    customMarks: [
+      10, 30, 75, 80, 91
+    ]
   };
 
   var $window = $(window),
@@ -128,11 +131,20 @@
 
     }
 
-    function calculateMarks(docHeight, gap) {
+    function calculateMarks(docHeight, gap, customMarks) {
       var marks = {};
+      gap = (!gap) ? 25 : gap;
+
       for (var i = 1; i <= (100/gap); i++)
-        marks[gap*i+'%'] = parseInt(docHeight * (i/gap*i), 10);
+        marks[gap*i+'%'] = parseInt(docHeight*gap/100, 10);
       marks['100%'] = docHeight - 5;
+
+      if (customMarks.constructor === Array) {
+        customMarks.forEach(function (mark) {
+          marks[mark + '%'] = parseInt(docHeight * mark / 100, 10);
+        });
+      }
+
       return marks;
     }
 
@@ -272,7 +284,7 @@
           scrollDistance = $window.scrollTop() + winHeight,
 
           // Recalculate percentage marks
-          marks = calculateMarks(docHeight, options.markGap),
+          marks = calculateMarks(docHeight, options.markGap, options.customMarks),
 
           // Timing
           timing = +new Date - startTime;
