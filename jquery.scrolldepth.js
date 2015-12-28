@@ -35,7 +35,7 @@
       gtmOverride: false,
       markGap: 25,
       customMarks: [
-        10, 30, 75, 80, 91
+        10, 30, 80, 91
       ]
     };
 
@@ -151,8 +151,9 @@
         var marks = {};
         gap = (!gap) ? 25 : gap;
 
-        for (var i = 1; i <= (100/gap); i++)
-          marks[gap*i+'%'] = parseInt(docHeight*gap/100, 10);
+        for (var i = 1; i <= (100/gap); i++) {
+          marks[gap*i+'%'] = parseInt(docHeight*gap*i/100, 10);
+        }
         marks['100%'] = docHeight - 5;
 
         if (customMarks.constructor === Array) {
