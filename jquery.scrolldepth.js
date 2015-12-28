@@ -34,9 +34,7 @@
       gaGlobal: false,
       gtmOverride: false,
       markGap: 25,
-      customMarks: [
-        10, 30, 80, 91
-      ]
+      customMarks: []
     };
 
     var $window = $(window),
