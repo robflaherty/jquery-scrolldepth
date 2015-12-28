@@ -16,7 +16,8 @@
     pixelDepth: true,
     nonInteraction: true,
     gaGlobal: false,
-    gtmOverride: false
+    gtmOverride: false,
+    markGap: 25
   };
 
   var $window = $(window),
@@ -127,14 +128,12 @@
 
     }
 
-    function calculateMarks(docHeight) {
-      return {
-        '25%' : parseInt(docHeight * 0.25, 10),
-        '50%' : parseInt(docHeight * 0.50, 10),
-        '75%' : parseInt(docHeight * 0.75, 10),
-        // Cushion to trigger 100% event in iOS
-        '100%': docHeight - 5
-      };
+    function calculateMarks(docHeight, gap) {
+      var marks = {};
+      for (var i = 1; i <= (100/gap); i++)
+        marks[gap*i+'%'] = parseInt(docHeight * (i/gap*i), 10);
+      marks['100%'] = docHeight - 5;
+      return marks;
     }
 
     function checkMarks(marks, scrollDistance, timing) {
@@ -273,7 +272,7 @@
           scrollDistance = $window.scrollTop() + winHeight,
 
           // Recalculate percentage marks
-          marks = calculateMarks(docHeight),
+          marks = calculateMarks(docHeight, options.markGap),
 
           // Timing
           timing = +new Date - startTime;
