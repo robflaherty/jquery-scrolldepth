@@ -152,13 +152,14 @@
         for (var i = 1; i <= (100/gap); i++) {
           marks[gap*i+'%'] = parseInt(docHeight*gap*i/100, 10);
         }
-        marks['100%'] = docHeight - 5;
 
         if (customMarks.constructor === Array) {
           customMarks.forEach(function (mark) {
             marks[mark + '%'] = parseInt(docHeight * mark / 100, 10);
           });
         }
+
+        marks['100%'] = docHeight - 5;
 
         return marks;
       }
