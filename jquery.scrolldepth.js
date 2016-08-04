@@ -32,7 +32,8 @@
       pixelDepth: true,
       nonInteraction: true,
       gaGlobal: false,
-      gtmOverride: false
+      gtmOverride: false,
+      elementsWithMarks : false
     };
 
     var $window = $(window),
@@ -152,23 +153,39 @@
       }
 
       function checkMarks(marks, scrollDistance, timing, element) {
+        var _cache = (element === document ? cache : element.cache);
+
         // Check each active mark
         $.each(marks, function(key, val) {
-          if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-            sendEvent('Percentage', key, scrollDistance, timing, element);
-            cache.push(key);
-          }
+            if ( $.inArray(key, _cache) === -1 && scrollDistance >= val ) {
+                sendEvent('Percentage', key, scrollDistance, timing, element);
+                _cache.push(key);
+            }
         });
       }
 
       function checkElements(elements, scrollDistance, timing) {
         $.each(elements, function(index, elem) {
-          if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
-            if ( scrollDistance >= $(elem).offset().top ) {
-              sendEvent('Elements', elem, scrollDistance, timing, elem);
-              cache.push(elem);
+            if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
+                var top = $(elem).offset().top;
+                if (options.elementsWithMarks) {
+                    if (elem.cache === undefined) {
+                        elem.cache = [];
+                    }
+                    var height = $(elem).height();
+                    var bottom = top + height;                
+                    var marks = calculateMarks(bottom);
+                    checkMarks(marks, scrollDistance, timing, elem);
+
+                    if (scrollDistance >= bottom) {
+                        cache.push(elem);
+                    }
+                }
+                else if ( scrollDistance >= top) {
+                    sendEvent('Elements', elem, scrollDistance, timing, elem);
+                    cache.push(elem);
+                }
             }
-          }
         });
       }
 
