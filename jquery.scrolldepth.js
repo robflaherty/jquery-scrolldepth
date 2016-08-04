@@ -142,13 +142,13 @@
 
       }
 
-      function calculateMarks(docHeight) {
+      function calculateMarks(elemHeight) {
         return {
-          '25%' : parseInt(docHeight * 0.25, 10),
-          '50%' : parseInt(docHeight * 0.50, 10),
-          '75%' : parseInt(docHeight * 0.75, 10),
+          '25%' : parseInt(elemHeight * 0.25, 10),
+          '50%' : parseInt(elemHeight * 0.50, 10),
+          '75%' : parseInt(elemHeight * 0.75, 10),
           // Cushion to trigger 100% event in iOS
-          '100%': docHeight - 5
+          '100%': elemHeight - 5
         };
       }
 
