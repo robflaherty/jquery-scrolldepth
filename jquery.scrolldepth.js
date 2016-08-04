@@ -92,19 +92,17 @@
        * Functions
        */
 
-      function sendEvent(action, label, scrollDistance, timing) {
-
+      function sendEvent(action, label, scrollDistance, timing, elem) {
         if (standardEventHandler) {
 
-          standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
-
-          if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
+          standardEventHandler({'element' : elem, 'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+          if (options.pixelDepth && arguments.length > 2 && scrollDistance >= lastPixelDepth) {
             lastPixelDepth = scrollDistance;
-            standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+            standardEventHandler({'element' : elem, 'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
           }
 
           if (options.userTiming && arguments.length > 3) {
-            standardEventHandler({'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
+            standardEventHandler({'element' : elem, 'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
           }
 
         } else {
@@ -153,11 +151,11 @@
         };
       }
 
-      function checkMarks(marks, scrollDistance, timing) {
+      function checkMarks(marks, scrollDistance, timing, element) {
         // Check each active mark
         $.each(marks, function(key, val) {
           if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-            sendEvent('Percentage', key, scrollDistance, timing);
+            sendEvent('Percentage', key, scrollDistance, timing, element);
             cache.push(key);
           }
         });
@@ -167,7 +165,7 @@
         $.each(elements, function(index, elem) {
           if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
             if ( scrollDistance >= $(elem).offset().top ) {
-              sendEvent('Elements', elem, scrollDistance, timing);
+              sendEvent('Elements', elem, scrollDistance, timing, elem);
               cache.push(elem);
             }
           }
@@ -308,7 +306,7 @@
 
           // Check standard marks
           if (options.percentage) {
-            checkMarks(marks, scrollDistance, timing);
+            checkMarks(marks, scrollDistance, timing, document);
           }
         }, 500));
 
