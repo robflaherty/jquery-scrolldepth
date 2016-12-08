@@ -8,12 +8,20 @@
 /* Universal module definition */
 
 (function(factory) {
-  if (typeof define === 'function' && define.amd) {
+  
+  //attempt to get global reference to jQuery
+  //if it's available, we shouldn't ask for the reference from elsewhere
+  var jQueryRef;
+  if (window && window.jQuery) {
+    jQueryRef = window.jQuery;
+  }
+  //either call this module's factory or return the output
+  if (!jQueryRef && typeof define === 'function' && define.amd) {
     // AMD
     define(['jquery'], factory);
   } else if (typeof module === 'object' && module.exports) {
-    // CommonJS
-    module.exports = factory(require('jquery'));
+    // CommonJS, use global jQuery ref or load from module
+    module.exports = factory(jQueryRef || require('jquery'));
   } else {
     // Browser globals
     factory(jQuery);
