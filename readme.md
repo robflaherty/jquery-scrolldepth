@@ -17,6 +17,7 @@ There's a test HTML file that mocks the Google Analytics functions and writes th
 If you have any questions you can find me on Twitter at [@robflaherty](https://twitter.com/robflaherty). If you need help fixing something, **please provide a URL**.
 
 ## Changelog
+1.0 (12/8/16): Added support for customer tracker name and custom dataLayer name.
 
 0.9.1 (4/28/16): Added support for Universal Module Definition (UMD).
 
