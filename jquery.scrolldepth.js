@@ -18,7 +18,15 @@
     // Browser globals
     factory(jQuery);
   }
-}(function($) {
+}(function ($) {
+
+  /* Event values */
+  var eventValues = {
+    eventCategory: 'Scroll Depth', // default value : 'Scroll Depth'
+    eventActionPixelDepth: 'Pixel Depth', // default value : 'Pixel Depth'
+    eventActionPercentage: 'Percentage', // default value : 'Percentage'
+    eventActionElements: 'Elements' // default value : 'Elements'
+  }
 
 /* Scroll Depth */
 
@@ -104,20 +112,20 @@
 
         if (standardEventHandler) {
 
-          standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+        standardEventHandler({ 'event': 'ScrollDistance', 'eventCategory': eventValues.eventCategory, 'eventAction': action, 'eventLabel': label, 'eventValue': 1, 'eventNonInteraction': options.nonInteraction });
 
           if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
             lastPixelDepth = scrollDistance;
-            standardEventHandler({'event': 'ScrollDistance', 'eventCategory': 'Scroll Depth', 'eventAction': 'Pixel Depth', 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction});
+          standardEventHandler({ 'event': 'ScrollDistance', 'eventCategory': eventValues.eventCategory, 'eventAction': eventValues.eventActionPixelDepth, 'eventLabel': rounded(scrollDistance), 'eventValue': 1, 'eventNonInteraction': options.nonInteraction });
           }
 
           if (options.userTiming && arguments.length > 3) {
-            standardEventHandler({'event': 'ScrollTiming', 'eventCategory': 'Scroll Depth', 'eventAction': action, 'eventLabel': label, 'eventTiming': timing});
+          standardEventHandler({ 'event': 'ScrollTiming', 'eventCategory': eventValues.eventCategory, 'eventAction': action, 'eventLabel': label, 'eventTiming': timing });
           }
 
           if (globalSiteTag) {
             gtag('event', 'scroll_depth', {
-              'category': 'Scroll Depth',
+              'category': eventValues.eventCategory,
               'scroll_distance': label,
               'px_distance': scrollDistance
             });
@@ -127,30 +135,30 @@
 
           if (universalGA) {
 
-            window[gaGlobal](command, 'event', 'Scroll Depth', action, label, 1, {'nonInteraction': options.nonInteraction});
+          window[gaGlobal](command, 'event', eventValues.eventCategory, action, label, 1, { 'nonInteraction': options.nonInteraction });
 
             if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
               lastPixelDepth = scrollDistance;
-              window[gaGlobal](command, 'event', 'Scroll Depth', 'Pixel Depth', rounded(scrollDistance), 1, {'nonInteraction': options.nonInteraction});
+            window[gaGlobal](command, 'event', eventValues.eventCategory, eventValues.eventActionPixelDepth, rounded(scrollDistance), 1, { 'nonInteraction': options.nonInteraction });
             }
 
             if (options.userTiming && arguments.length > 3) {
-              window[gaGlobal](command, 'timing', 'Scroll Depth', action, timing, label);
+            window[gaGlobal](command, 'timing', eventValues.eventCategory, action, timing, label);
             }
 
           }
 
           if (classicGA) {
 
-            _gaq.push(['_trackEvent', 'Scroll Depth', action, label, 1, options.nonInteraction]);
+          _gaq.push(['_trackEvent', eventValues.eventCategory, action, label, 1, options.nonInteraction]);
 
             if (options.pixelDepth && arguments.length > 2 && scrollDistance > lastPixelDepth) {
               lastPixelDepth = scrollDistance;
-              _gaq.push(['_trackEvent', 'Scroll Depth', 'Pixel Depth', rounded(scrollDistance), 1, options.nonInteraction]);
+            _gaq.push(['_trackEvent', eventValues.eventCategory, eventValues.eventActionPixelDepth, rounded(scrollDistance), 1, options.nonInteraction]);
             }
 
             if (options.userTiming && arguments.length > 3) {
-              _gaq.push(['_trackTiming', 'Scroll Depth', action, timing, label, 100]);
+            _gaq.push(['_trackTiming', eventValues.eventCategory, action, timing, label, 100]);
             }
 
           }
@@ -171,19 +179,19 @@
 
       function checkMarks(marks, scrollDistance, timing) {
         // Check each active mark
-        $.each(marks, function(key, val) {
-          if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
-            sendEvent('Percentage', key, scrollDistance, timing);
+      $.each(marks, function (key, val) {
+        if ($.inArray(key, cache) === -1 && scrollDistance >= val) {
+          sendEvent(eventValues.eventActionPercentage, key, scrollDistance, timing);
             cache.push(key);
           }
         });
       }
 
       function checkElements(elements, scrollDistance, timing) {
-        $.each(elements, function(index, elem) {
-          if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
-            if ( scrollDistance >= $(elem).offset().top ) {
-              sendEvent('Elements', elem, scrollDistance, timing);
+      $.each(elements, function(index, elem) {
+        if ( $.inArray(elem, cache) === -1 && $(elem).length ) {
+          if ( scrollDistance >= $(elem).offset().top ) {
+            sendEvent(eventValues.eventActionElements, elem, scrollDistance, timing);
               cache.push(elem);
             }
           }
@@ -192,7 +200,7 @@
 
       function rounded(scrollDistance) {
         // Returns String
-        return (Math.floor(scrollDistance/250) * 250).toString();
+      return (Math.floor(scrollDistance/250) * 250).toString();
       }
 
       function init() {
@@ -203,8 +211,8 @@
        * Public Methods
        */
 
-      // Reset Scroll Depth with the originally initialized options
-      $.scrollDepth.reset = function() {
+    // Reset.categorywith the originally initialized options
+    $.scrollDepth.reset = function() {
         cache = [];
         lastPixelDepth = 0;
         $window.off('scroll.scrollDepth');
@@ -212,7 +220,7 @@
       };
 
       // Add DOM elements to be tracked
-      $.scrollDepth.addElements = function(elems) {
+    $.scrollDepth.addElements = function(elems) {
 
         if (typeof elems == "undefined" || !$.isArray(elems)) {
           return;
@@ -228,13 +236,13 @@
       };
 
       // Remove DOM elements currently tracked
-      $.scrollDepth.removeElements = function(elems) {
+    $.scrollDepth.removeElements = function(elems) {
 
         if (typeof elems == "undefined" || !$.isArray(elems)) {
           return;
         }
 
-        $.each(elems, function(index, elem) {
+      $.each(elems, function(index, elem) {
 
           var inElementsArray = $.inArray(elem, options.elements);
           var inCacheArray = $.inArray(elem, cache);
@@ -263,12 +271,12 @@
         var context, args, result;
         var timeout = null;
         var previous = 0;
-        var later = function() {
+      var later = function() {
           previous = new Date;
           timeout = null;
           result = func.apply(context, args);
         };
-        return function() {
+      return function() {
           var now = new Date;
           if (!previous) previous = now;
           var remaining = wait - (now - previous);
@@ -294,7 +302,7 @@
 
         scrollEventBound = true;
 
-        $window.on('scroll.scrollDepth', throttle(function() {
+      $window.on('scroll.scrollDepth', throttle(function() {
           /*
            * We calculate document and window height on each scroll event to
            * account for dynamic DOM changes.
@@ -311,7 +319,7 @@
             timing = +new Date - startTime;
 
           // If all marks already hit, unbind scroll event
-          if (cache.length >= options.elements.length + (options.percentage ? 4:0)) {
+        if (cache.length >= options.elements.length + (options.percentage ? 4:0)) {
             $window.off('scroll.scrollDepth');
             scrollEventBound = false;
             return;
