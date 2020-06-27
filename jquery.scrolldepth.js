@@ -34,7 +34,9 @@
       gaGlobal: false,
       gtmOverride: false,
       trackerName: false,
-      dataLayer: 'dataLayer'
+      dataLayer: 'dataLayer',
+      markGap: 25,
+      customMarks: [],
     };
 
     var $window = $(window),
@@ -159,14 +161,23 @@
 
       }
 
-      function calculateMarks(docHeight) {
-        return {
-          '25%' : parseInt(docHeight * 0.25, 10),
-          '50%' : parseInt(docHeight * 0.50, 10),
-          '75%' : parseInt(docHeight * 0.75, 10),
-          // Cushion to trigger 100% event in iOS
-          '100%': docHeight - 5
-        };
+      function calculateMarks(docHeight, gap, customMarks) {
+        var marks = {};
+        gap = (!gap) ? 25 : gap;
+
+        for (var i = 1; i <= (100/gap); i++) {
+          marks[gap*i+'%'] = parseInt(docHeight*gap*i/100, 10);
+        }
+
+        if (customMarks.constructor === Array) {
+          customMarks.forEach(function (mark) {
+            marks[mark + '%'] = parseInt(docHeight * mark / 100, 10);
+          });
+        }
+
+        marks['100%'] = docHeight - 5;
+
+        return marks;
       }
 
       function checkMarks(marks, scrollDistance, timing) {
@@ -304,8 +315,8 @@
             winHeight = window.innerHeight ? window.innerHeight : $window.height(),
             scrollDistance = $window.scrollTop() + winHeight,
 
-            // Recalculate percentage marks
-            marks = calculateMarks(docHeight),
+          // Recalculate percentage marks
+          marks = calculateMarks(docHeight, options.markGap, options.customMarks),
 
             // Timing
             timing = +new Date - startTime;
@@ -336,5 +347,4 @@
 
     // UMD export
     return $.scrollDepth;
-
 }));
