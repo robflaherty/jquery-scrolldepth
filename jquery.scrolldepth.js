@@ -38,6 +38,9 @@
     };
 
     var $window = $(window),
+        $document = $(document),
+        docHeight = $document.height(),
+        winHeight = window.innerHeight ? window.innerHeight : $window.height(),
       cache = [],
       scrollEventBound = false,
       lastPixelDepth = 0,
@@ -58,7 +61,7 @@
       options = $.extend({}, defaults, options);
 
       // Return early if document height is too small
-      if ( $(document).height() < options.minHeight ) {
+      if ( docHeight < options.minHeight ) {
         return;
       }
 
@@ -195,6 +198,7 @@
           if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
             sendEvent('Percentage', key, scrollDistance, timing);
             cache.push(key);
+            console.log(key);
           }
         });
       }
@@ -272,41 +276,6 @@
       };
 
       /*
-       * Throttle function borrowed from:
-       * Underscore.js 1.5.2
-       * http://underscorejs.org
-       * (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
-       * Underscore may be freely distributed under the MIT license.
-       */
-
-      function throttle(func, wait) {
-        var context, args, result;
-        var timeout = null;
-        var previous = 0;
-        var later = function() {
-          previous = new Date;
-          timeout = null;
-          result = func.apply(context, args);
-        };
-        return function() {
-          var now = new Date;
-          if (!previous) previous = now;
-          var remaining = wait - (now - previous);
-          context = this;
-          args = arguments;
-          if (remaining <= 0) {
-            clearTimeout(timeout);
-            timeout = null;
-            previous = now;
-            result = func.apply(context, args);
-          } else if (!timeout) {
-            timeout = setTimeout(later, remaining);
-          }
-          return result;
-        };
-      }
-
-      /*
        * Scroll Event
        */
 
@@ -314,39 +283,60 @@
 
         scrollEventBound = true;
 
-        $window.on('scroll.scrollDepth', throttle(function() {
+        var scrollTop = -1, scrollDistance, scrollTopNew,
+            marks, timing;
+        
+        $window.on('load resize', function() {
+          window.requestAnimationFrame(function() {
+            docHeight = $document.height();
+            winHeight = window.innerHeight ? window.innerHeight : $window.height();
+          });
+        });
+
+        function checkScroll() {
           /*
            * We calculate document and window height on each scroll event to
            * account for dynamic DOM changes.
            */
+          
+          scrollTopNew = window.pageYOffset ? window.pageYOffset : $window.scrollTop();
 
-          var docHeight = $(document).height(),
-            winHeight = window.innerHeight ? window.innerHeight : $window.height(),
-            scrollDistance = $window.scrollTop() + winHeight,
-
-            // Recalculate percentage marks
-            marks = calculateMarks(docHeight),
-
-            // Timing
-            timing = +new Date - startTime;
-
-          // If all marks already hit, unbind scroll event
-          if (cache.length >= options.elements.length + (options.percentage ? 4:0)) {
-            $window.off('scroll.scrollDepth');
-            scrollEventBound = false;
-            return;
+          if (scrollTop == scrollTopNew) {
+            if (scrollEventBound) window.requestAnimationFrame(checkScroll);
+            return false;
+          } else {
+            scrollTop = scrollTopNew;
+            scrollDistance = scrollTop + winHeight;
           }
 
-          // Check specified DOM elements
-          if (options.elements) {
-            checkElements(options.elements, scrollDistance, timing);
-          }
+           // Recalculate percentage marks
+           marks = calculateMarks(docHeight);
 
-          // Check standard marks
-          if (options.percentage) {
-            checkMarks(marks, scrollDistance, timing);
-          }
-        }, 500));
+           // Timing
+           timing = +new Date - startTime;
+
+           // If all marks already hit, unbind scroll event
+           if (cache.length >= options.elements.length + (options.percentage ? 4:0)) {
+             $window.off('scroll.scrollDepth');
+             scrollEventBound = false;
+             return;
+           }
+
+           // Check specified DOM elements
+           if (options.elements) {
+             checkElements(options.elements, scrollDistance, timing);
+           }
+
+           // Check standard marks
+           if (options.percentage) {
+             checkMarks(marks, scrollDistance, timing);
+           }
+
+           if (scrollEventBound) window.requestAnimationFrame(checkScroll);
+
+        }
+
+        checkScroll();
 
       }
 
